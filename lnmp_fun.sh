@@ -98,6 +98,7 @@ function installNginx()
 	--user=www \
 	--group=www \
 	--with-http_ssl_module \
+	--with-http_v2_module \
 	--with-http_flv_module \
 	--with-http_stub_status_module \
 	--with-http_gzip_static_module \
@@ -174,7 +175,7 @@ function installMysql
 
 	#C++语法解析器
 	if [ ! -d "$sourcePath/boost_1_70_0" ];then
-		wget https://nchc.dl.sourceforge.net/project/boost/boost/1.70.0/boost_1_70_0.tar.gz
+		wget https://dl.bintray.com/boostorg/release/1.70.0/source/boost_1_70_0.tar.gz
 		tar -zxvf boost_1_70_0.tar.gz
 	fi
 
@@ -187,7 +188,7 @@ function installMysql
 	fi
 
 
-	apt-get install -y build-essential libncurses5-dev cmake libboost-dev libaio1 libaio-dev
+	apt-get install -y build-essential libncurses5-dev cmake libboost-dev libaio1 libaio-dev pkg-config
 
 	cd mysql-8.0.19
 
@@ -295,7 +296,8 @@ function installPhp
 {
 
 	#安装依赖
-	apt-get install -y libiconv-hook-dev libmcrypt-dev libxml2-dev libmysqlclient-dev libcurl4-openssl-dev libjpeg8-dev  libfreetype6-dev
+	apt-get install -y libiconv-hook-dev libmcrypt-dev libxml2-dev libmysqlclient-dev libcurl4-openssl-dev libjpeg8-dev  libfreetype6-dev libsqlite3-dev
+	apt-get install libonig-dev -y	
 
 	cd $sourcePath
 
@@ -324,14 +326,14 @@ function installPhp
 	fi
 
 	#下载PHP
-	if [ ! -d "$sourcePath/php-7.3.2" ];then
-		wget http://cn2.php.net/distributions/php-7.3.2.tar.gz
-		tar -zxvf php-7.3.2.tar.gz
+	if [ ! -d "$sourcePath/php-7.4.3" ];then
+		wget https://www.php.net/distributions/php-7.4.3.tar.gz
+		tar -zxvf php-7.4.3.tar.gz
 	fi
 
-	cd php-7.3.2
+	cd php-7.4.3
 
-	./configure -prefix=/usr/local/php --with-config-file-path=/usr/local/php/etc --with-iconv-dir --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr -enable-xml -disable-rpath -enable-bcmath -enable-shmop -enable-sysvsem -enable-inline-optimization --with-curl  -enable-mbregex -enable-fpm -enable-mbstring  -enable-ftp --with-gd  --with-openssl --with-mhash -enable-pcntl -enable-sockets --with-xmlrpc -enable-zip -enable-soap --without-pear --with-gettext  --enable-mysqlnd   --with-pdo-mysql --with-fpm-user=www --with-fpm-group=www --disable-fileinfo
+	./configure -prefix=/usr/local/php --with-config-file-path=/usr/local/php/etc --with-iconv-dir --with-freetype-dir --with-jpeg-dir --with-png-dir --with-zlib --with-libxml-dir=/usr -enable-xml -disable-rpath -enable-bcmath -enable-shmop -enable-sysvsem -enable-inline-optimization --with-curl  -enable-mbregex -enable-fpm -enable-mbstring  -enable-ftp --enable-gd  --with-openssl --with-mhash -enable-pcntl -enable-sockets --with-xmlrpc -enable-zip -enable-soap --without-pear --with-gettext  --enable-mysqlnd   --with-pdo-mysql --with-fpm-user=www --with-fpm-group=www --disable-fileinfo
 
 	 #编译安装
 	 make -j && make install 
