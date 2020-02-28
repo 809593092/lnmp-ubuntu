@@ -69,7 +69,7 @@ function installNginx()
 	if [ ! -f "$nginxPath" ];then
 		#wget http://tengine.taobao.org/download/tengine-2.2.0.tar.gz
 		#tar -zxvf tengine-2.2.0.tar.gz
-		git clone https://github.com/alibaba/tengine.git
+		git clone https://gitee.com/mirrors/Tengine.git tengine 
 	fi
 
 
@@ -170,26 +170,26 @@ function installMysql
 
 	cd $sourcePath
 	
-	mysqlVersion="mysql-8.0.15.tar.gz"
+	mysqlVersion="mysql-8.0.19.tar.gz"
 
 	#C++语法解析器
-	#if [ ! -d "$sourcePath/boost_1_67_0" ];then
-	#	https://dl.bintray.com/boostorg/release/1.67.0/source/boost_1_67_0.tar.gz
-	#	tar -zxvf boost_1_67_0.tar.gz
-	#fi
+	if [ ! -d "$sourcePath/boost_1_70_0" ];then
+		wget https://nchc.dl.sourceforge.net/project/boost/boost/1.70.0/boost_1_70_0.tar.gz
+		tar -zxvf boost_1_70_0.tar.gz
+	fi
 
 
 
 	#下载Mysql源码
-	if [ ! -f "$sourcePath/mysql-8.0.15.tar.gz" ];then
-		wget https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.15.tar.gz
-		tar -zxvf mysql-8.0.15.tar.gz
+	if [ ! -f "$sourcePath/mysql-8.0.19.tar.gz" ];then
+		wget https://cdn.mysql.com//Downloads/MySQL-8.0/mysql-8.0.19.tar.gz
+		tar -zxvf mysql-8.0.19.tar.gz
 	fi
 
 
 	apt-get install -y build-essential libncurses5-dev cmake libboost-dev libaio1 libaio-dev
 
-	cd mysql-8.0.15
+	cd mysql-8.0.19
 
 	#安装前准备及目录设置
 	groupadd mysql
@@ -216,7 +216,7 @@ function installMysql
 	-DMYSQL_DATADIR=/var/mysql/data \
 	-DSYSCONFDIR=/var/mysql \
 	-DDOWNLOAD_BOOST=1 \
-	-DWITH_BOOST=/usr/local/src/boost_1_68_0 \
+	-DWITH_BOOST=/usr/local/src/boost_1_70_0 \
 	-DINSTALL_MYSQLSHAREDIR=/var/mysql/share \
 	-DFORCE_INSOURCE_BUILD=1
 
